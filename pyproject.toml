@@ -1,0 +1,13 @@
+[project]
+name = "alien-invasion"
+version = "1.0.0"
+description = "A polished arcade shooter built with Pygame"
+readme = "README.md"
+requires-python = ">=3.10,<3.14"
+dependencies = [
+    "pygame>=2.6.1",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
