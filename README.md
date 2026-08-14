@@ -1,6 +1,37 @@
-# about alien invasion 
-Alien Invasion is a fast paced arcade style shooter game where the player takes control of a spaceship defending Earth from waves of hostile extraterrestrials.
-The goal is to destroy incoming alien fleets before they reach the planet, using precise movement and rapid firing to survive increasingly difficult enemy patterns. 
-As the game progresses, the aliens become faster, more numerous, and employ varied attack formations, challenging the player’s reflexes and strategy. Players can earn points for each alien destroyed,
-with bonuses for clearing waves quickly, and may collect power-ups to upgrade weapons, increase speed, or gain temporary shields. The game ends if the player loses all lives, 
-making every decision and shot count in the fight against the invasion.
+# Alien Invasion
+
+Alien Invasion is a complete arcade shooter built with Python and Pygame. Clear
+each descending fleet before it reaches your ship. Every cleared wave moves
+faster and awards more points.
+
+## Run the game
+
+The project uses [uv](https://docs.astral.sh/uv/) to manage its environment:
+
+```bash
+uv sync
+uv run python alien_invasion.py
+```
+
+Alternatively, install `pygame>=2.6.1` in a Python 3.10-3.13 environment and
+run `python alien_invasion.py`.
+
+## Controls
+
+| Action | Control |
+| --- | --- |
+| Move | Left/Right arrows or A/D |
+| Fire | Space |
+| Start/restart | Enter or the Play button |
+| Pause | P |
+| Quit | Escape or Q |
+
+You begin with three ships. The HUD shows the current wave, session high score,
+current score, and remaining ships. The window can be resized at any time and
+keeps the active fleet and HUD fitted to the available play area.
+
+## Tests
+
+```bash
+uv run python -m unittest discover -s tests -v
+```
