@@ -38,3 +38,13 @@ class Scoreboard:
     def check_high_score(self):
         self.stats.high_score = max(self.stats.high_score, self.stats.score)
         self.prep_images()
+
+    def show_score(self):
+        self.screen.blit(self.score_image, self.score_rect)
+        self.screen.blit(self.high_score_image, self.high_score_rect)
+        self.screen.blit(self.level_image, self.level_rect)
+
+        for ship_number in range(self.stats.ships_left):
+            rect = self.ship_image.get_rect()
+            rect.topleft = (28 + ship_number * 38, 52)
+            self.screen.blit(self.ship_image, rect)
