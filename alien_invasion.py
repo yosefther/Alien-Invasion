@@ -121,3 +121,40 @@ class AlienInvasion:
             )
             alien.rect.clamp_ip(screen_rect)
             alien.x = float(alien.rect.x)
+
+    def _check_keydown_events(self, event):
+        if event.key in (pygame.K_RIGHT, pygame.K_d):
+            self.ship.moving_right = True
+        elif event.key in (pygame.K_LEFT, pygame.K_a):
+            self.ship.moving_left = True
+        elif event.key == pygame.K_SPACE and self.stats.game_active and not self.stats.paused:
+            self._fire_bullet()
+        elif event.key in (pygame.K_RETURN, pygame.K_KP_ENTER) and not self.stats.game_active:
+            self._start_game()
+        elif event.key == pygame.K_p and self.stats.game_active:
+            self.stats.paused = not self.stats.paused
+        elif event.key in (pygame.K_ESCAPE, pygame.K_q):
+            self._quit_game()
+
+    def _check_keyup_events(self, event):
+        if event.key in (pygame.K_RIGHT, pygame.K_d):
+            self.ship.moving_right = False
+        elif event.key in (pygame.K_LEFT, pygame.K_a):
+            self.ship.moving_left = False
+
+    def _start_game(self):
+        self.settings.reset_dynamic_settings()
+        self.stats.reset_stats()
+        self.stats.game_active = True
+        self.stats.paused = False
+        self.respawn_until = 0
+        self.scoreboard.prep_images()
+        self.aliens.empty()
+        self.bullets.empty()
+        self._create_fleet()
+        self.ship.center_ship()
+        pygame.mouse.set_visible(False)
+
+    def _quit_game(self):
+        pygame.quit()
+        raise SystemExit
