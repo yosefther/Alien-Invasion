@@ -94,3 +94,30 @@ class AlienInvasion:
         self.play_button.resize_for_screen(self.screen)
         self._resize_sprites(old_width, old_height)
         self.stars = self._create_starfield()
+
+    def _resize_sprites(self, old_width, old_height):
+        width_ratio = self.settings.screen_width / old_width
+        height_ratio = self.settings.screen_height / old_height
+        screen_rect = self.screen.get_rect()
+
+        for bullet in self.bullets.sprites():
+            bullet.screen = self.screen
+            bullet.rect.centerx = round(bullet.rect.centerx * width_ratio)
+            bullet.y *= height_ratio
+            bullet.rect.y = round(bullet.y)
+
+        play_top = 88
+        old_play_bottom = max(play_top + 1, old_height - self.ship.rect.height - 24)
+        new_play_bottom = max(
+            play_top + 1,
+            self.settings.screen_height - self.ship.rect.height - 24,
+        )
+        play_height_ratio = (new_play_bottom - play_top) / (old_play_bottom - play_top)
+        for alien in self.aliens.sprites():
+            alien.screen = self.screen
+            alien.rect.centerx = round(alien.rect.centerx * width_ratio)
+            alien.rect.y = round(
+                play_top + (alien.rect.y - play_top) * play_height_ratio
+            )
+            alien.rect.clamp_ip(screen_rect)
+            alien.x = float(alien.rect.x)
