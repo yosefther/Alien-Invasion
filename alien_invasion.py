@@ -75,3 +75,22 @@ class AlienInvasion:
                 and self.play_button.rect.collidepoint(event.pos)
             ):
                 self._start_game()
+
+    def _resize_screen(self, size):
+        old_width = self.settings.screen_width
+        old_height = self.settings.screen_height
+        new_width = max(self.settings.min_screen_width, int(size[0]))
+        new_height = max(self.settings.min_screen_height, int(size[1]))
+
+        self.screen = pygame.display.set_mode(
+            (new_width, new_height),
+            pygame.RESIZABLE,
+        )
+        self.settings.screen_width = new_width
+        self.settings.screen_height = new_height
+
+        self.ship.resize_for_screen(self.screen, old_width)
+        self.scoreboard.resize_for_screen(self.screen)
+        self.play_button.resize_for_screen(self.screen)
+        self._resize_sprites(old_width, old_height)
+        self.stars = self._create_starfield()
