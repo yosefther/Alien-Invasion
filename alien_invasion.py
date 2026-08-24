@@ -248,3 +248,32 @@ class AlienInvasion:
         alien.rect.x = round(x_position)
         alien.rect.y = round(y_position)
         self.aliens.add(alien)
+
+    def _draw_background(self):
+        self.screen.fill(self.settings.bg_color)
+        for x, y, radius, color in self.stars:
+            pygame.draw.circle(self.screen, color, (x, y), radius)
+        pygame.draw.line(
+            self.screen,
+            (26, 46, 72),
+            (0, 78),
+            (self.settings.screen_width, 78),
+        )
+
+    def _draw_overlay(self, title, subtitle=""):
+        veil = pygame.Surface(self.screen.get_size(), pygame.SRCALPHA)
+        veil.fill((4, 8, 18, 208))
+        self.screen.blit(veil, (0, 0))
+
+        screen_rect = self.screen.get_rect()
+        title_image = self.title_font.render(title, True, (237, 245, 255))
+        title_rect = title_image.get_rect(
+            center=(screen_rect.centerx, screen_rect.centery - 85)
+        )
+        self.screen.blit(title_image, title_rect)
+        if subtitle:
+            subtitle_image = self.subtitle_font.render(subtitle, True, (126, 219, 213))
+            subtitle_rect = subtitle_image.get_rect(
+                center=(screen_rect.centerx, screen_rect.centery - 30)
+            )
+            self.screen.blit(subtitle_image, subtitle_rect)
