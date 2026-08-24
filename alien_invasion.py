@@ -158,3 +158,36 @@ class AlienInvasion:
     def _quit_game(self):
         pygame.quit()
         raise SystemExit
+
+    def _update_game(self):
+        if pygame.time.get_ticks() < self.respawn_until:
+            return
+
+        self.ship.update()
+        self.bullets.update()
+        for bullet in self.bullets.copy():
+            if bullet.rect.bottom <= 0:
+                self.bullets.remove(bullet)
+
+        self._check_bullet_alien_collisions()
+        self._update_aliens()
+
+    def _fire_bullet(self):
+        if len(self.bullets) < self.settings.bullets_allowed:
+            self.bullets.add(Bullet(self))
+
+    def _check_bullet_alien_collisions(self):
+        collisions = pygame.sprite.groupcollide(
+            self.bullets, self.aliens, True, True
+        )
+        if collisions:
+            aliens_destroyed = sum(len(hit_aliens) for hit_aliens in collisions.values())
+            self.stats.score += self.settings.alien_points * aliens_destroyed
+            self.scoreboard.check_high_score()
+
+        if not self.aliens:
+            self.bullets.empty()
+            self.settings.increase_speed()
+            self.stats.level += 1
+            self.scoreboard.prep_images()
+            self._create_fleet()
