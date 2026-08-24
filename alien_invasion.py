@@ -277,3 +277,35 @@ class AlienInvasion:
                 center=(screen_rect.centerx, screen_rect.centery - 30)
             )
             self.screen.blit(subtitle_image, subtitle_rect)
+
+    def _update_screen(self):
+        self._draw_background()
+        self.aliens.draw(self.screen)
+        for bullet in self.bullets.sprites():
+            bullet.draw_bullet()
+
+        respawning = pygame.time.get_ticks() < self.respawn_until
+        if not respawning or (pygame.time.get_ticks() // 120) % 2 == 0:
+            self.ship.blitme()
+        self.scoreboard.show_score()
+
+        if not self.stats.game_active:
+            subtitle = (
+                f"FINAL SCORE  {self.stats.score:,}"
+                if self.stats.score
+                else "DEFEND THE LAST OUTPOST"
+            )
+            self._draw_overlay("ALIEN INVASION", subtitle)
+            self.play_button.draw()
+        elif self.stats.paused:
+            self._draw_overlay("PAUSED")
+
+        pygame.display.flip()
+
+
+def main():
+    AlienInvasion().run_game()
+
+
+if __name__ == "__main__":
+    main()
