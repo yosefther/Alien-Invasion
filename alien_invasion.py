@@ -191,3 +191,35 @@ class AlienInvasion:
             self.stats.level += 1
             self.scoreboard.prep_images()
             self._create_fleet()
+
+    def _update_aliens(self):
+        if any(alien.check_edges() for alien in self.aliens.sprites()):
+            for alien in self.aliens.sprites():
+                alien.rect.y += self.settings.fleet_drop_speed
+            self.settings.fleet_direction *= -1
+
+        self.aliens.update()
+
+        if pygame.sprite.spritecollideany(self.ship, self.aliens):
+            self._ship_hit()
+            return
+
+        screen_rect = self.screen.get_rect()
+        if any(alien.rect.bottom >= screen_rect.bottom for alien in self.aliens.sprites()):
+            self._ship_hit()
+
+    def _ship_hit(self):
+        self.stats.ships_left -= 1
+        self.scoreboard.prep_images()
+        self.bullets.empty()
+        self.aliens.empty()
+
+        if self.stats.ships_left <= 0:
+            self.stats.game_active = False
+            self.play_button.set_message("PLAY AGAIN")
+            pygame.mouse.set_visible(True)
+            return
+
+        self._create_fleet()
+        self.ship.center_ship()
+        self.respawn_until = pygame.time.get_ticks() + 850
