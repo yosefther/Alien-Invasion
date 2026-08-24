@@ -223,3 +223,28 @@ class AlienInvasion:
         self._create_fleet()
         self.ship.center_ship()
         self.respawn_until = pygame.time.get_ticks() + 850
+
+    def _create_fleet(self):
+        alien = Alien(self)
+        horizontal_space = alien.rect.width * 1.65
+        vertical_space = alien.rect.height * 1.65
+        usable_width = self.settings.screen_width - (2 * alien.rect.width)
+        aliens_per_row = max(1, int(usable_width // horizontal_space))
+        usable_height = self.settings.screen_height - 320
+        rows = max(1, min(5, int(usable_height // vertical_space)))
+
+        fleet_width = (aliens_per_row - 1) * horizontal_space + alien.rect.width
+        start_x = (self.settings.screen_width - fleet_width) / 2
+        for row_number in range(rows):
+            for alien_number in range(aliens_per_row):
+                self._create_alien(
+                    start_x + alien_number * horizontal_space,
+                    108 + row_number * vertical_space,
+                )
+
+    def _create_alien(self, x_position, y_position):
+        alien = Alien(self)
+        alien.x = float(x_position)
+        alien.rect.x = round(x_position)
+        alien.rect.y = round(y_position)
+        self.aliens.add(alien)
