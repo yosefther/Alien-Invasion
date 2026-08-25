@@ -69,3 +69,27 @@ class AlienInvasionTests(unittest.TestCase):
     def test_screen_renders_in_headless_mode(self):
         self.game._update_screen()
         self.assertEqual(self.game.screen.get_size(), (1200, 800))
+
+    def test_resize_updates_layout_without_resetting_game(self):
+        initial_alien_count = len(self.game.aliens)
+        self.game.stats.score = 250
+
+        self.game._resize_screen((900, 650))
+
+        self.assertEqual(self.game.screen.get_size(), (900, 650))
+        self.assertEqual(self.game.ship.rect.bottom, 650)
+        self.assertEqual(self.game.play_button.rect.center, (450, 407))
+        self.assertEqual(self.game.scoreboard.high_score_rect.centerx, 450)
+        self.assertEqual(len(self.game.aliens), initial_alien_count)
+        self.assertEqual(self.game.stats.score, 250)
+        self.assertTrue(
+            all(self.game.screen.get_rect().contains(alien.rect) for alien in self.game.aliens)
+        )
+
+    def test_resize_enforces_playable_minimum(self):
+        self.game._resize_screen((320, 240))
+        self.assertEqual(self.game.screen.get_size(), (800, 600))
+
+
+if __name__ == "__main__":
+    unittest.main()
