@@ -2,11 +2,6 @@
 
 An arcade shooter in Python and Pygame. Shoot down each fleet before it reaches your ship. Every wave you clear moves faster and is worth more points.
 
-TODO(yosef): one line on why you built it.
-
-![demo](docs/demo.gif)
-<!-- TODO(yosef): record GIF -->
-
 ## How to run it
 
 Python 3.10–3.13 with [uv](https://docs.astral.sh/uv/):
@@ -41,10 +36,6 @@ uv run python -m unittest discover -s tests -v
 ```
 
 The tests run headless (SDL dummy driver). They cover ship bounds, the bullet limit, collisions and scoring, wave progression, game over, rendering and resizing.
-
-## What's next
-
-TODO(yosef): what's next (sound, saved high scores, ...?).
 
 ## License
 
