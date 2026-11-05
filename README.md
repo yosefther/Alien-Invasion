@@ -1,37 +1,51 @@
 # Alien Invasion
 
-Alien Invasion is a complete arcade shooter built with Python and Pygame. Clear
-each descending fleet before it reaches your ship. Every cleared wave moves
-faster and awards more points.
+An arcade shooter in Python and Pygame. Shoot down each fleet before it reaches your ship. Every wave you clear moves faster and is worth more points.
 
-## Run the game
+TODO(yosef): one line on why you built it.
 
-The project uses [uv](https://docs.astral.sh/uv/) to manage its environment:
+![demo](docs/demo.gif)
+<!-- TODO(yosef): record GIF -->
+
+## How to run it
+
+Python 3.10–3.13 with [uv](https://docs.astral.sh/uv/):
 
 ```bash
 uv sync
 uv run python alien_invasion.py
 ```
 
-Alternatively, install `pygame>=2.6.1` in a Python 3.10-3.13 environment and
-run `python alien_invasion.py`.
+Or install `pygame>=2.6.1` yourself and run `python alien_invasion.py`.
 
-## Controls
-
-| Action | Control |
+| Action | Keys |
 | --- | --- |
-| Move | Left/Right arrows or A/D |
+| Move | Left/Right or A/D |
 | Fire | Space |
-| Start/restart | Enter or the Play button |
+| Start / restart | Enter or click Play |
 | Pause | P |
-| Quit | Escape or Q |
+| Quit | Esc or Q |
 
-You begin with three ships. The HUD shows the current wave, session high score,
-current score, and remaining ships. The window can be resized at any time and
-keeps the active fleet and HUD fitted to the available play area.
+You get three ships. The HUD shows the wave, score, session high score and ships left.
+
+## How it works
+
+`alien_invasion.py` runs the main loop and owns the game state. Ships, aliens and bullets are Pygame sprites, and hits come from `pygame.sprite.groupcollide`. When a fleet is cleared, `Settings.increase_speed()` multiplies alien speed by 1.14 and points by 1.35, so later waves get harder and pay more.
+
+The window is resizable. On resize the ship, HUD, bullets and aliens are rescaled to the new play area, so the current game keeps going instead of restarting. There's a minimum size of 800×600.
 
 ## Tests
 
 ```bash
 uv run python -m unittest discover -s tests -v
 ```
+
+The tests run headless (SDL dummy driver). They cover ship bounds, the bullet limit, collisions and scoring, wave progression, game over, rendering and resizing.
+
+## What's next
+
+TODO(yosef): what's next (sound, saved high scores, ...?).
+
+## License
+
+MIT. See [LICENSE](LICENSE).
